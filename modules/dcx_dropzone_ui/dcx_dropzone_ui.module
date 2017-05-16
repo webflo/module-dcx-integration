@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @file
+ */
+
+/**
+ *
+ */
 function dcx_dropzone_ui_theme() {
   return [
     'dcxdropzone' => [

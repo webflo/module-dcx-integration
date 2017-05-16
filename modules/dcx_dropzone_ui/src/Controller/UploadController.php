@@ -2,12 +2,12 @@
 
 namespace Drupal\dcx_dropzone_ui\Controller;
 
+use Drupal\Core\Render\Element\StatusMessages;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\dcx_migration\DcxImportServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -25,7 +25,7 @@ class UploadController extends ControllerBase {
   /**
    * The current request.
    *
-   * @var \Symfony\Component\HttpFoundation\Request $request
+   * @var \Symfony\Component\HttpFoundation\Request
    *   The HTTP request object.
    */
   protected $request;
@@ -109,10 +109,10 @@ class UploadController extends ControllerBase {
    *
    * Renders all status messages and returns them in a JSON Response object.
    *
-   * @return JsonResponse
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
   public static function batchFinish() {
-    $messages = drupal_render(\Drupal\Core\Render\Element\StatusMessages::renderMessages(NULL));
+    $messages = drupal_render(StatusMessages::renderMessages(NULL));
     return new JsonResponse(['markup' => $messages]);
   }
 
@@ -125,4 +125,5 @@ class UploadController extends ControllerBase {
   public static function batchRedirectCallback($url, $query_options) {
     return $query_options['query']['id'];
   }
+
 }

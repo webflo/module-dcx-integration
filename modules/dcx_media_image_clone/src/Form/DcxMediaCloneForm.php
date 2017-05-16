@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\dcx_media_image_clone\Form;
 
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -18,14 +17,14 @@ class DcxMediaCloneForm extends FormBase {
   /**
    * The entity manager.
    *
-   * @var EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
 
   /**
    * Constructs a ContentEntityForm object.
    *
-   * @param EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
    */
   public function __construct(EntityManagerInterface $entity_manager) {
@@ -53,7 +52,7 @@ class DcxMediaCloneForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $media = NULL) {
     // Meh.. this should make use of Paramconverter or EntityBaseForm, but I
-    // cannot figure out how either of them works atm :(
+    // cannot figure out how either of them works atm :(.
     $media = $this->entityManager->getStorage('media')->load($media);
     $form_state->set('media', $media);
 
@@ -84,4 +83,5 @@ class DcxMediaCloneForm extends FormBase {
     drupal_set_message($this->t('Media @label was cloned.', ['@label' => Link::fromTextAndUrl($label, $url)->toString()]));
     $form_state->setRedirect('entity.media.edit_form', ['media' => $clone->id()]);
   }
+
 }

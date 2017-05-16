@@ -26,10 +26,10 @@ class MockClient implements ClientInterface {
       /*
       // Evaluate data and decide what kind of asset we have here
       if (0 == $type%3) {
-        return $this->buildStoryAsset($url);
+      return $this->buildStoryAsset($url);
       }
       if (0 == $type%2) {
-        return $this->buildImageAsset($url);
+      return $this->buildImageAsset($url);
       }
        */
     }
@@ -38,6 +38,9 @@ class MockClient implements ClientInterface {
     }
   }
 
+  /**
+   *
+   */
   protected function buildImageAsset($url) {
     global $base_url;
 
@@ -51,6 +54,9 @@ class MockClient implements ClientInterface {
     return new Image($data);
   }
 
+  /**
+   *
+   */
   protected function buildStoryAsset($url) {
     $data['id'] = $url;
     $data['title'] = "Mocked article $url";
@@ -63,6 +69,9 @@ class MockClient implements ClientInterface {
     return new Article($data);
   }
 
+  /**
+   *
+   */
   public function trackUsage($dcx_ids, $url, $published, $type) {
     dpm("Media " . print_r($dcx_ids, 1) . " used on URL {" . $url . "}");
   }

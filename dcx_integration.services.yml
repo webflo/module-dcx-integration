@@ -2,4 +2,3 @@ services:
   dcx_integration.client:
     class: Drupal\dcx_integration\JsonClient
     arguments: ["@config.factory", "@current_user", "@string_translation", "@logger.factory"]
-

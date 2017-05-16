@@ -2,7 +2,6 @@
 
 namespace Drupal\dcx_track_media_usage\Plugin\QueueWorker;
 
-
 /**
  * @file
  * A worker that tracks usages on CRON run.
@@ -29,14 +28,14 @@ class MediaUsageWorker extends QueueWorkerBase implements ContainerFactoryPlugin
   /**
    * The entity discovery service.
    *
-   * @var ReferencedEntityDiscoveryServiceInterface
+   * @var \Drupal\dcx_track_media_usage\ReferencedEntityDiscoveryServiceInterface
    */
   protected $entityDiscoveryService;
 
   /**
    * DCX Client.
    *
-   * @var ClientInterface
+   * @var \Drupal\dcx_integration\ClientInterface
    */
   protected $dcxClient;
 
@@ -47,7 +46,6 @@ class MediaUsageWorker extends QueueWorkerBase implements ContainerFactoryPlugin
    */
   protected $entityTypeManager;
 
-
   /**
    * Constructs a new LocaleTranslation object.
    *
@@ -57,11 +55,11 @@ class MediaUsageWorker extends QueueWorkerBase implements ContainerFactoryPlugin
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param ReferencedEntityDiscoveryServiceInterface $entityDiscoveryService
+   * @param \Drupal\dcx_track_media_usage\ReferencedEntityDiscoveryServiceInterface $entityDiscoveryService
    *   The entity discovery service.
-   * @param ClientInterface $dcxClient
+   * @param \Drupal\dcx_integration\ClientInterface $dcxClient
    *   DCX Client.
-   * @param EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ReferencedEntityDiscoveryServiceInterface $entityDiscoveryService, ClientInterface $dcxClient, EntityTypeManagerInterface $entityTypeManager) {
@@ -104,4 +102,5 @@ class MediaUsageWorker extends QueueWorkerBase implements ContainerFactoryPlugin
       drupal_set_message($e->getMessage(), 'error');
     }
   }
+
 }

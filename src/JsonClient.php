@@ -199,14 +199,15 @@ class JsonClient implements ClientInterface {
       'copyright' => ['fields', 'CopyrightNotice', 0, 'value'],
       'status' => [[$this, 'computeStatus']],
       // Deliberately disabled. See comment in ::computeExpire
-      //'kill_date' => [[$this, 'computeExpire']],
+      // 'kill_date' => [[$this, 'computeExpire']],.
     ];
 
     $data = $this->processAttributeMap($attribute_map, $json);
 
     try {
       $asset = new Image($data);
-    } catch(\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->watchdog_exception(__METHOD__, $e);
       throw $e;
     }
@@ -233,7 +234,8 @@ class JsonClient implements ClientInterface {
 
     try {
       $asset = new Article($data);
-    } catch(\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->watchdog_exception(__METHOD__, $e);
       throw $e;
     }
@@ -321,7 +323,9 @@ class JsonClient implements ClientInterface {
    */
   protected function extractImageIds($json, $keys) {
     $data = $this->extractData($json, $keys);
-    if (!$data) return;
+    if (!$data) {
+      return;
+    }
 
     foreach ($data as $image_data) {
       $images[] = $this->extractData($image_data, ['fields', 'DocumentRef', 0, '_id']);
@@ -738,11 +742,11 @@ class JsonClient implements ClientInterface {
    * @param string $dcx_id
    *   The DC-X document ID.
    * @param string $entity_type
-   *   Entity type of the entity representing the dcx_id
+   *   Entity type of the entity representing the dcx_id.
    * @param int $entity_id
-   *   Entity id of the entity representing the dcx_id
+   *   Entity id of the entity representing the dcx_id.
    */
-  protected function getAllUsage($dcx_id, $entity_type =  NULL, $entity_id = NULL) {
+  protected function getAllUsage($dcx_id, $entity_type = NULL, $entity_id = NULL) {
     $document = $this->getJson($dcx_id);
     $pubinfos = $document['_referenced']['dcx:pubinfo'];
 
@@ -771,7 +775,7 @@ class JsonClient implements ClientInterface {
    *
    * Global watchdog_exception is not unit testable. :( This method is.
    */
-  protected function watchdog_exception($type, \Exception $exception, $message = NULL, $variables = array(), $severity = RfcLogLevel::ERROR, $link = NULL) {
+  protected function watchdog_exception($type, \Exception $exception, $message = NULL, $variables = [], $severity = RfcLogLevel::ERROR, $link = NULL) {
     if (empty($message)) {
       $message = '%type: @message in %function (line %line of %file).';
     }
@@ -794,7 +798,7 @@ class JsonClient implements ClientInterface {
         '_mode' => 'my_usertags',
         'type_id' => 'usertagtype-default',
         'parent_id' => NULL,
-        '_sort' => 'UTAG_VALUE'
+        '_sort' => 'UTAG_VALUE',
       ],
       's' => [
         'properties' => '_label',
@@ -805,7 +809,7 @@ class JsonClient implements ClientInterface {
     $this->api_client->getObject('usertag', $params, $usertags);
 
     $collections = [];
-    foreach($usertags['entries'] as $usertag) {
+    foreach ($usertags['entries'] as $usertag) {
       $utag_id = preg_replace('#dcxapi:usertag/#', '', $usertag['_id']);
       $collections[$usertag['_id']] = [
         'label' => $usertag['properties']['_label'],
@@ -814,7 +818,9 @@ class JsonClient implements ClientInterface {
       ];
 
       if (isset($usertag['children'])) {
-        $collections[$usertag['_id']]['children'] = array_map(function($c) { return $c['_id']; }, $usertag['children']);
+        $collections[$usertag['_id']]['children'] = array_map(function ($c) {
+          return $c['_id'];
+        }, $usertag['children']);
       }
       else {
         $collections[$usertag['_id']]['children'] = [];
@@ -822,7 +828,7 @@ class JsonClient implements ClientInterface {
     }
 
     foreach ($collections as $collection) {
-      foreach($collection['children'] as $child_id) {
+      foreach ($collection['children'] as $child_id) {
         $collections[$child_id]['parent'] = $child_id;
       }
     }
@@ -830,6 +836,9 @@ class JsonClient implements ClientInterface {
     return $collections;
   }
 
+  /**
+   *
+   */
   public function getDocsOfCollection($utag_id) {
     $doctoutag_params = [
       'q[utag_id]' => $utag_id,
@@ -841,13 +850,12 @@ class JsonClient implements ClientInterface {
 
     $documents = [];
 
-    foreach($docs['entries'] as $doc) {
+    foreach ($docs['entries'] as $doc) {
       $documents[] = $doc['properties']['doc_id']['_id'];
     }
 
     return $documents;
   }
-
 
   /**
    * {@inheritdoc}
@@ -886,4 +894,5 @@ class JsonClient implements ClientInterface {
 
     return $data;
   }
+
 }

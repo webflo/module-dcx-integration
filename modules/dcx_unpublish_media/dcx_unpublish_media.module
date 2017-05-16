@@ -1,19 +1,21 @@
 <?php
+
 /**
  * @file
- * Contains
+ * Contains.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 /**
  * Implement hook_ENTITY_TYPE_update().
  */
 function dcx_unpublish_media_media_update($entity) {
-  // Only care about media images
+  // Only care about media images.
   if ('image' !== $entity->bundle()) {
     return;
   }
 
-  // Do not care about clones of media:images. Clones have a parent
+  // Do not care about clones of media:images. Clones have a parent.
   if ($entity->field_parent_media && NULL !== $entity->field_parent_media->target_id) {
     return;
   }
@@ -29,8 +31,8 @@ function dcx_unpublish_media_media_update($entity) {
 
   if (!$entity->status->value && $entity->original->status->value) {
     $target_fileuri = str_replace('public://', 'private://', $file->getFileUri());
-    // Remove everything after the last / and itself
-    $target_dir = preg_replace('#' . DIRECTORY_SEPARATOR. '[^' . DIRECTORY_SEPARATOR . ']+$#', '', $target_fileuri);
+    // Remove everything after the last / and itself.
+    $target_dir = preg_replace('#' . DIRECTORY_SEPARATOR . '[^' . DIRECTORY_SEPARATOR . ']+$#', '', $target_fileuri);
     if (!is_dir($target_dir)) {
       mkdir($target_dir);
     }
@@ -41,8 +43,8 @@ function dcx_unpublish_media_media_update($entity) {
   }
   elseif ($entity->status->value && !$entity->original->status->value) {
     $target_fileuri = str_replace('private://', 'public://', $file->getFileUri());
-    // Remove everything after the last / and itself
-    $target_dir = preg_replace('#' . DIRECTORY_SEPARATOR. '[^' . DIRECTORY_SEPARATOR . ']+$#', '', $target_fileuri);
+    // Remove everything after the last / and itself.
+    $target_dir = preg_replace('#' . DIRECTORY_SEPARATOR . '[^' . DIRECTORY_SEPARATOR . ']+$#', '', $target_fileuri);
     if (!is_dir($target_dir)) {
       mkdir($target_dir);
     }
@@ -58,14 +60,13 @@ function dcx_unpublish_media_media_update($entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_build_defaults_alter
+ * Implements hook_ENTITY_TYPE_build_defaults_alter.
  */
-function dcx_unpublish_media_media_build_defaults_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, $view_mode) {
+function dcx_unpublish_media_media_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
 
   $mediaBundleStorage = \Drupal::entityTypeManager()
     ->getStorage('media_bundle');
   $bundle = $mediaBundleStorage->load($entity->bundle());
-
 
   if ($bundle->get('type') == 'image' && !$entity->status->value) {
 
@@ -77,10 +78,10 @@ function dcx_unpublish_media_media_build_defaults_alter(array &$build, \Drupal\C
     if ($media) {
       $renderController = \Drupal::entityTypeManager()->getViewBuilder('media');
       $build = $renderController->view($media, $view_mode);
-    } else {
+    }
+    else {
       $build = [];
     }
 
   }
 }
-

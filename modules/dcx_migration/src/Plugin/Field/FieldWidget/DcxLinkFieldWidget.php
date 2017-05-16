@@ -32,12 +32,12 @@ class DcxLinkFieldWidget extends WidgetBase {
 
     $document = str_replace('dcxapi:document', 'doc', $items[$delta]->value);
 
-    $element['value'] = $element + array(
+    $element['value'] = $element + [
       '#title' => t('View in DCX'),
       '#type' => 'link',
       '#url' => Url::fromUri($baseUrl . "/documents#/" . $document),
       '#attributes' => ['target' => '_blank'],
-    );
+    ];
 
     return $element;
   }

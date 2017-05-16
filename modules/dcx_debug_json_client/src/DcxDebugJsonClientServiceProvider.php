@@ -16,7 +16,7 @@ class DcxDebugJsonClientServiceProvider implements ServiceModifierInterface {
   /**
    * Modifies existing service definitions.
    *
-   * @param ContainerBuilder $container
+   * @param \Drupal\Core\DependencyInjection\ContainerBuilder $container
    *   The ContainerBuilder whose service definitions can be altered.
    */
   public function alter(ContainerBuilder $container) {

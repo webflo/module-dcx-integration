@@ -1,16 +1,17 @@
 <?php
+
 /**
  * @file Contains the code to generate the custom drush commands.
  */
 
-use \Drupal\Core\Queue\RequeueException;
-use \Drupal\Core\Queue\SuspendQueueException;
+use Drupal\Core\Queue\RequeueException;
+use Drupal\Core\Queue\SuspendQueueException;
 
 /**
  * Implements hook_drush_command().
  */
 function dcx_integration_drush_command() {
-  $items = array();
+  $items = [];
   $items['dcx-queue'] = [
     'description' => 'Works on the dcx queue',
   ];

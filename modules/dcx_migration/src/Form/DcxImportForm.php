@@ -50,14 +50,14 @@ class DcxImportForm extends FormBase {
       '#type' => 'textfield',
       '#required' => TRUE,
     ];
-    $form['actions'] = array(
+    $form['actions'] = [
       '#type' => 'actions',
-      'submit' => array(
+      'submit' => [
         '#type' => 'submit',
         '#value' => $this->t('Import'),
         '#button_type' => 'primary',
-      ),
-    );
+      ],
+    ];
 
     return $form;
   }

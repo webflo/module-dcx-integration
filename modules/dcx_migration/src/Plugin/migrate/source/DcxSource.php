@@ -2,6 +2,7 @@
 
 namespace Drupal\dcx_migration\Plugin\migrate\source;
 
+use Drupal\dcx_integration\Asset\Image;
 use Drupal\dcx_integration\Exception\IllegalAssetTypeException;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\MigrateException;
@@ -40,22 +41,31 @@ class DcxSource extends SourcePluginBase {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
   }
 
+  /**
+   *
+   */
   protected function getDcxObject($id) {
     $object = $this->dcx_service->getObject($id);
-    if (! $object instanceof \Drupal\dcx_integration\Asset\Image) {
+    if (!$object instanceof Image) {
       throw new IllegalAssetTypeException($id, get_class($object), '\Drupal\dcx_integration\Asset\Image');
     }
     return $object;
   }
 
+  /**
+   *
+   */
   public function getIDs() {
     return ['id' => ['type' => 'string']];
   }
 
+  /**
+   *
+   */
   protected function initializeIterator() {
     $map = $this->migration->getIdMap();
     $query = $map->getDatabase()->select($map->mapTableName(), 'map')
-              ->fields('map');
+      ->fields('map');
     $result = $query->execute();
 
     $rows = $result->fetchAllAssoc('sourceid1');
@@ -65,14 +75,23 @@ class DcxSource extends SourcePluginBase {
     return $arrayObject->getIterator();
   }
 
+  /**
+   *
+   */
   public function fields() {
     return ['id' => 'The unique dcx identifier of this ressource'];
   }
 
+  /**
+   *
+   */
   public function __toString() {
     return __METHOD__;
   }
 
+  /**
+   *
+   */
   public function getRowById($id) {
     $dcx_object = $this->getDcxObject($id);
     $row_data = $dcx_object->data();
@@ -94,7 +113,7 @@ class DcxSource extends SourcePluginBase {
    * migration configuration, thus the use case for the file URL (see migrate
    * process plugin FileFromUrl) is given no longer.
    *
-   * @param Row $row
+   * @param \Drupal\migrate\Row $row
    *   The row to prepare.
    *
    * @return bool

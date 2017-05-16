@@ -6,7 +6,6 @@ use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
-use Drupal\dcx_migration\DcxMigrateExecutable;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -31,7 +30,7 @@ class DcxImportService implements DcxImportServiceInterface {
   protected $plugin_mangager;
 
   /**
-   * Event dispatcher
+   * Event dispatcher.
    *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
@@ -44,7 +43,7 @@ class DcxImportService implements DcxImportServiceInterface {
    * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $plugin_manager
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
    */
-  public function __construct(TranslationInterface $string_translation, MigrationPluginManagerInterface $plugin_manager , EventDispatcherInterface $event_dispatcher) {
+  public function __construct(TranslationInterface $string_translation, MigrationPluginManagerInterface $plugin_manager, EventDispatcherInterface $event_dispatcher) {
     $this->stringTranslation = $string_translation;
     $this->plugin_manager = $plugin_manager;
     $this->event_dispatcher = $event_dispatcher;
@@ -71,19 +70,19 @@ class DcxImportService implements DcxImportServiceInterface {
    *
    * Technically this prepares a batch process. It's either processed by Form
    * API if we're running in context of a form, or return the batch definition
-   * for further processing
+   * for further processing.
    */
   public function import($ids) {
     $executable = $this->getMigrationExecutable();
 
-    foreach($ids as $id) {
+    foreach ($ids as $id) {
       $operations[] = [[__CLASS__, 'batchImport'], [$id, $executable]];
     }
-    $batch = array(
+    $batch = [
       'title' => t('Import media from DC-X'),
       'operations' => $operations,
       'finished' => [__CLASS__, 'batchFinished'],
-    );
+    ];
 
     batch_set($batch);
   }
@@ -91,12 +90,12 @@ class DcxImportService implements DcxImportServiceInterface {
   /**
    * Batch operation callback.
    *
-   *
-   * @param string $id DC-X ID to import.
+   * @param string $id
+   *   DC-X ID to import.
    * @param \Drupal\dcx_migration\DcxMigrateExecutable $executable
    *   The custom migratte exectuable to perform the import.
-   * @param array|\ArrayAccess $context.
-   * The batch context array, passed by reference.
+   * @param array|\ArrayAccess $context
+   *   The batch context array, passed by reference.
    */
   public static function batchImport($id, $executable, &$context) {
     if (empty($context['results'])) {
@@ -168,4 +167,5 @@ class DcxImportService implements DcxImportServiceInterface {
 
     return $entity_ids;
   }
+
 }

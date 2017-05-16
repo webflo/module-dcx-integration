@@ -82,7 +82,7 @@ class JsonClientSettings extends ConfigFormBase {
       '#submit' => ['::generateRandomKey'],
       // No validation at all is required in the equivocate case, so
       // we include this here to make it skip the form-level validator.
-      '#validate' => array(),
+      '#validate' => [],
     ];
 
     return parent::buildForm($form, $form_state);

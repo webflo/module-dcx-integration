@@ -18,7 +18,7 @@ class RequestSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events['kernel.request'] = ['kernel_request'];
 
     return $events;

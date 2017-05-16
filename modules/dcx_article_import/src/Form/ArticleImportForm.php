@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\dcx_article_import\Form\ArticleImportForm.
- */
-
 namespace Drupal\dcx_article_import\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -17,7 +12,6 @@ use Drupal\dcx_migration\DcxImportServiceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\PrivateTempStoreFactory;
-use Drupal\user\PrivateTempStore;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -50,10 +44,14 @@ class ArticleImportForm extends FormBase {
 
   /**
    * The current user account.
+   *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $user_account;
 
+  /**
+   *
+   */
   public function __construct(ClientInterface $dcx_integration_client, DcxImportServiceInterface $dcx_import_service, PrivateTempStoreFactory $temp_store_factory, AccountProxyInterface $user_account) {
     $this->dcx_integration_client = $dcx_integration_client;
     $this->dcx_import_service = $dcx_import_service;
@@ -61,6 +59,9 @@ class ArticleImportForm extends FormBase {
     $this->user_account = $user_account;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('dcx_integration.client'),
@@ -83,7 +84,8 @@ class ArticleImportForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $asset = $this->store->get('asset');
 
-    if (!$asset) { // Step 1
+    // Step 1.
+    if (!$asset) {
       $form['dcx_id'] = [
         '#type' => 'textfield',
         '#title' => $this->t('DC-X ID'),
@@ -103,18 +105,20 @@ class ArticleImportForm extends FormBase {
           '#button_type' => 'primary',
         ],
       ];
-    } else { // Step 2
+    }
+    // Step 2.
+    else {
       $data = $asset->data();
 
       $form['title'] = [
         '#markup' => "<h2>" . $data['title'] . "</h2>",
       ];
-      $form['body'] = array(
+      $form['body'] = [
         '#type' => 'text_format',
         '#default_value' => isset($data['body']) ? $data['body'] : '',
         '#format' => 'full_html',
         '#description' => $this->t('Please insert horizontal rule tags to split the text body into separate paragraphs.'),
-      );
+      ];
       $form['actions'] = [
         '#type' => 'actions',
         'save' => [
@@ -135,10 +139,13 @@ class ArticleImportForm extends FormBase {
     return $form;
   }
 
+  /**
+   *
+   */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // $dcx_id might be NULL in step 2
+    // $dcx_id might be NULL in step 2.
     if ($dcx_id = $form_state->getValue('dcx_id')) {
       if (!preg_match('#^document/(doc|dc5burda-)\w+$#', $dcx_id)) {
         $form_state->setError($form, $this->t('Please provide a valid DC-X ID.'));
@@ -172,10 +179,16 @@ class ArticleImportForm extends FormBase {
     }
   }
 
+  /**
+   *
+   */
   public function clearTempStore(array &$form, FormStateInterface $form_state) {
     $this->store->set('asset', NULL);
   }
 
+  /**
+   *
+   */
   public function saveArticle(array &$form, FormStateInterface $form_state) {
     $uid = $this->user_account->id();
     $data = $this->store->get('asset')->data();
@@ -183,10 +196,10 @@ class ArticleImportForm extends FormBase {
     $title = $data['title'];
 
     $node = Node::create([
-        'type' => 'article',
-        'title' => $title,
-        'uid' => $uid,
-        'status' => 0,
+      'type' => 'article',
+      'title' => $title,
+      'uid' => $uid,
+      'status' => 0,
     ]);
 
     $body = $form_state->getValue('body')['value'];
@@ -197,7 +210,7 @@ class ArticleImportForm extends FormBase {
         'status' => 1,
         'field_text' => [
           ['value' => $body_part, 'format' => 'basic_html'],
-        ]
+        ],
       ]);
       $body_paragraph->save();
       $node->field_paragraphs->appendItem($body_paragraph);
@@ -214,7 +227,7 @@ class ArticleImportForm extends FormBase {
         'uid' => $uid,
         'status' => 1,
         'field_media' => [
-          ['target_id' => $media_id]
+          ['target_id' => $media_id],
         ],
       ]);
       $media_paragraph->save();
@@ -226,4 +239,5 @@ class ArticleImportForm extends FormBase {
     $this->store->delete('asset');
     $form_state->setRedirectUrl(Url::fromRoute('entity.node.edit_form', ['node' => $node->id()]));
   }
+
 }

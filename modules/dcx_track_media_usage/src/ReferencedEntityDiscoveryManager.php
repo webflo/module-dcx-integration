@@ -13,6 +13,9 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
  */
 class ReferencedEntityDiscoveryManager extends DefaultPluginManager {
 
+  /**
+   *
+   */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
     parent::__construct(
       'Plugin/ReferencedEntityDiscovery',

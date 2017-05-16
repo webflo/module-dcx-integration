@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\dcx_track_media_usage\Plugin\ReferencedEntityDiscovery;
 
 use Drupal\Component\Plugin\PluginBase;

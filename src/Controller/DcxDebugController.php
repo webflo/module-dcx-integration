@@ -62,6 +62,9 @@ class DcxDebugController extends ControllerBase {
 
   }
 
+  /**
+   *
+   */
   public function archive() {
     $url = "http://burda.com/node/4711";
     $title = "Test test";

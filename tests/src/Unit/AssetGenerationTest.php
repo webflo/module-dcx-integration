@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\dcx_integration\Unit;
 
-use Drupal\dcx_integration\Asset\Image;
-use Drupal\dcx_integration\Asset\Article;
 use Drupal\dcx_integration\JsonClient;
 use Drupal\Tests\dcx_integration\DummyDcxApiClient;
 use Drupal\Tests\UnitTestCase;
@@ -16,7 +14,10 @@ class AssetGenerationTest extends UnitTestCase {
 
   protected $api_client;
 
-  function setUp() {
+  /**
+   *
+   */
+  public function setUp() {
     $jsonclientsettings = ['publication' => 'dummy_publication'];
     $config_factory = $this->getConfigFactoryStub(['dcx_integration.jsonclientsettings' => $jsonclientsettings]);
     $user = $this->getMock('\Drupal\Core\Session\AccountProxyInterface');
@@ -32,7 +33,10 @@ class AssetGenerationTest extends UnitTestCase {
     $this->client = new JsonClient($config_factory, $user, $stringTranslation, $loggerFactory, $this->api_client);
   }
 
-  function testGetObject__unknown_type() {
+  /**
+   *
+   */
+  public function testGetObject__unknown_type() {
     $this->api_client->expected_response_body = [
       'fields' => ['Type' => [0 => ['_id' => 'unknown']]],
     ];
@@ -41,19 +45,22 @@ class AssetGenerationTest extends UnitTestCase {
     $this->client->getObject('idOfUnknownType');
   }
 
-  function testGetObject__image() {
+  /**
+   *
+   */
+  public function testGetObject__image() {
     $this->api_client->expected_response_body = [
       '_id' => 'document/xyz',
       'fields' => [
         'Type' => [0 => ['_id' => 'dcxapi:tm_topic/documenttype-image']],
         'Filename' => [0 => ['value' => 'test__title']],
         'url' => [[$this, 'extractUrl'], 'files', 0, '_id'],
-        'Creator' => [['value' => 'test__Creator']]
+        'Creator' => [['value' => 'test__Creator']],
       ],
-      "files" => [["_id"  => "test__file"]],
+      "files" => [["_id" => "test__file"]],
       '_referenced' => [
         'dcx:file' => ["test__file" => ['properties' => ['_file_url_absolute' => 'test__url']]],
-        'dcx:rights' => ["test__right" => ['properties' => ['topic_id' => ['_id' => 'dcxapi:tm_topic/rightsusage-Online']]]]
+        'dcx:rights' => ["test__right" => ['properties' => ['topic_id' => ['_id' => 'dcxapi:tm_topic/rightsusage-Online']]]],
       ],
       '_rights_effective' => ['rightstype-UsagePermitted' => [[["_id" => "test__right"]]]],
     ];
@@ -62,13 +69,16 @@ class AssetGenerationTest extends UnitTestCase {
     $this->assertInstanceOf('Drupal\dcx_integration\Asset\Image', $asset);
   }
 
-  function testGetObject__article() {
+  /**
+   *
+   */
+  public function testGetObject__article() {
     $this->api_client->expected_response_body = [
       '_id' => 'document/abc',
       '_type' => 'dcx:document',
       'fields' => [
         'Type' => [0 => ['_id' => 'dcxapi:tm_topic/documenttype-story']],
-        'Headline' => [0 => ['value' => 'test__title',]],
+        'Headline' => [0 => ['value' => 'test__title']],
         'body' => [0 => ['value' => 'test__body']],
       ],
     ];

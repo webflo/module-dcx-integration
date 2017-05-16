@@ -11,6 +11,9 @@
  * so while it’s far from finished, it’s already working.
  */
 
+/**
+ *
+ */
 class DCX_Api_Client {
   const HTTP_TIMEOUT = 30;
   const HTTP_CONNECT_TIMEOUT = 5;
@@ -20,10 +23,13 @@ class DCX_Api_Client {
   protected $url;
   protected $username;
   protected $password;
-  protected $custom_http_headers = array();
+  protected $custom_http_headers = [];
   protected $http_useragent = 'DC-X Api Client (http://www.digicol.de/)';
 
-  public function __construct($url, $username, $password, $options = array()) {
+  /**
+   *
+   */
+  public function __construct($url, $username, $password, $options = []) {
 
     if (substr($url, -1) !== '/') {
       $url .= '/';
@@ -44,6 +50,9 @@ class DCX_Api_Client {
     }
   }
 
+  /**
+   *
+   */
   public function getContext(&$data) {
 
     $url = $this->fullUrl('_context');
@@ -71,12 +80,12 @@ class DCX_Api_Client {
     }
 
     if (!is_array($data)) {
-      $data = array();
+      $data = [];
       return $http_code;
     }
 
     if (!isset($data['@context'])) {
-      $data = array();
+      $data = [];
       return $http_code;
     }
 
@@ -86,7 +95,10 @@ class DCX_Api_Client {
 
     return $http_code;
   }
-  
+
+  /**
+   *
+   */
   public function getObject($url, array $params, &$data) {
 
     $url = $this->fullUrl($url) . '?' . http_build_query($params);
@@ -102,13 +114,16 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function createObject($url, array $params, array $data, &$response_body) {
 
     $url = $this->fullUrl($url) . '?' . http_build_query($params);
 
     $json_data = json_encode($data);
 
-    $curl = $this->getCurlHandle($url, array('Content-Type' => self::JSON_CONTENT_TYPE));
+    $curl = $this->getCurlHandle($url, ['Content-Type' => self::JSON_CONTENT_TYPE]);
 
     curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
 
@@ -121,13 +136,16 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function setObject($url, array $params, array $data, &$response_body) {
 
     $url = $this->fullUrl($url) . '?' . http_build_query($params);
 
     $json_data = json_encode($data);
 
-    $curl = $this->getCurlHandle($url, array('Content-Type' => self::JSON_CONTENT_TYPE));
+    $curl = $this->getCurlHandle($url, ['Content-Type' => self::JSON_CONTENT_TYPE]);
 
     curl_setopt($curl, CURLOPT_PUT, TRUE);
 
@@ -154,6 +172,9 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function deleteObject($url, array $params, &$response_body) {
 
     $url = $this->fullUrl($url) . '?' . http_build_query($params);
@@ -171,6 +192,9 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function getObjects($url, array $params, &$data) {
 
     $url = $this->fullUrl($url) . '?' . http_build_query($params);
@@ -186,6 +210,9 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function uploadFile($filename, array $params, &$response_body) {
 
     if (!file_exists($filename)) {
@@ -202,10 +229,10 @@ class DCX_Api_Client {
 
     $url = $this->url . '_file_upload';
 
-    $curl = $this->getCurlHandle($url, array(
+    $curl = $this->getCurlHandle($url, [
       'Content-Type' => $params['content_type'],
       'Slug' => $params['slug'],
-    ));
+    ]);
 
     curl_setopt($curl, CURLOPT_POST, TRUE);
     curl_setopt($curl, CURLOPT_BINARYTRANSFER, TRUE);
@@ -222,13 +249,16 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function upload($uploadconfig_id, array $params, &$response_body) {
 
     $url = $this->url . '_upload/' . urlencode($uploadconfig_id);
 
-    $curl = $this->getCurlHandle($url, array(
+    $curl = $this->getCurlHandle($url, [
        // 'Content-Type' => 'multipart/form-data'.
-      ));
+      ]);
 
     $this->flattenCurlPostfields($params, $postdata);
 
@@ -245,6 +275,9 @@ class DCX_Api_Client {
     return $http_code;
   }
 
+  /**
+   *
+   */
   public function objectIdToUrl($_type, $object_id) {
 
     // dcx:document, doc123 => http://example.com/dcx/api/document/doc123
@@ -255,12 +288,18 @@ class DCX_Api_Client {
       ));
   }
 
+  /**
+   *
+   */
   public function typeToCollectionUrl($_type) {
 
     // dcx:document => http://example.com/dcx/api/document
     return $this->fullUrl(substr($_type, 4));
   }
 
+  /**
+   *
+   */
   public function fullUrl($incomplete_url) {
 
     // document/doc123 => http://example.com/dcx/api/document/doc123
@@ -284,7 +323,10 @@ class DCX_Api_Client {
         );
   }
 
-  protected function getCurlHandle($url, $http_headers = array()) {
+  /**
+   *
+   */
+  protected function getCurlHandle($url, $http_headers = []) {
 
     $curl = curl_init($url);
 
@@ -304,7 +346,7 @@ class DCX_Api_Client {
       ));
 
     if (!is_array($http_headers)) {
-      $http_headers = array();
+      $http_headers = [];
     }
 
     $http_headers = array_merge($this->custom_http_headers, $http_headers);
@@ -313,7 +355,7 @@ class DCX_Api_Client {
       $http_headers['Accept'] = self::JSON_CONTENT_TYPE;
     }
 
-    $set_headers = array();
+    $set_headers = [];
 
     foreach ($http_headers as $key => $value) {
       $set_headers[] = sprintf('%s: %s', $key, $value);
@@ -324,6 +366,9 @@ class DCX_Api_Client {
     return $curl;
   }
 
+  /**
+   *
+   */
   protected function curlExec($curl, &$response_body, &$response_info) {
 
     $response = curl_exec($curl);
@@ -338,13 +383,16 @@ class DCX_Api_Client {
     return $response_info['http_code'];
   }
 
+  /**
+   *
+   */
   protected function flattenCurlPostfields($values, &$result, $fieldname_prefix = '') {
 
     // Curl is too dumb to understand nested arrays. Flatten them, and
     // use CurlFile for the file section.
     // see http://stackoverflow.com/questions/3772096/posting-multidimensional-array-with-php-and-curl
     if (!is_array($result)) {
-      $result = array();
+      $result = [];
     }
 
     foreach ($values as $key => $value) {
@@ -364,6 +412,9 @@ class DCX_Api_Client {
     }
   }
 
+  /**
+   *
+   */
   protected function isJson($content_type) {
 
     // Accept "application/json", "application/problem+json; charset=UTF-8"
@@ -379,6 +430,9 @@ class DCX_Api_Client {
     return (($parts[1] === 'json') || (substr($parts[1], -5) === '+json'));
   }
 
+  /**
+   *
+   */
   protected function decodeJson($json_str) {
 
     $result = json_decode($json_str, TRUE);
@@ -392,6 +446,9 @@ class DCX_Api_Client {
     return $result;
   }
 
+  /**
+   *
+   */
   protected function resolveCompactUrls(&$arr, array $prefixes) {
 
     foreach ($arr as $key => $value) {
@@ -408,6 +465,9 @@ class DCX_Api_Client {
     }
   }
 
+  /**
+   *
+   */
   protected function resolveCompactUrl($url, array $prefixes) {
 
     $parts = explode(':', $url, 2);
@@ -429,9 +489,12 @@ class DCX_Api_Client {
     return $prefixes[$prefix] . $suffix;
   }
 
+  /**
+   *
+   */
   protected function getCompactUrlPrefixes() {
 
-    $result = array();
+    $result = [];
 
     $this->getContext($context);
 

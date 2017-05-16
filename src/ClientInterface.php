@@ -9,6 +9,9 @@ namespace Drupal\dcx_integration;
  */
 interface ClientInterface {
 
+  /**
+   *
+   */
   public function getObject($id);
 
   /**
@@ -58,7 +61,7 @@ interface ClientInterface {
    * @param string $path
    *   Canonical path (e.g. node/23).
    * @param string $type
-   *   Type of the document. should be image or document
+   *   Type of the document. should be image or document.
    *
    * @return array
    *   Array of array of pubinfo data keyed by DC-X document ID.
@@ -77,7 +80,7 @@ interface ClientInterface {
   public function removeAllUsage($dcx_id);
 
   /**
-   * Retrieve collections of the current user
+   * Retrieve collections of the current user.
    *
    * @return array of arrays keyed by collection id.
    */
@@ -103,9 +106,10 @@ interface ClientInterface {
    * @param string $dcx_id
    *   The DC-X document ID.
    * @param string $entity_type
-   *   Entity type of the entity representing the dcx_id
+   *   Entity type of the entity representing the dcx_id.
    * @param int $entity_id
-   *   Entity id of the entity representing the dcx_id
+   *   Entity id of the entity representing the dcx_id.
    */
   public function removeUsageForCertainEntity($dcx_id, $entity_type, $entity_id);
+
 }

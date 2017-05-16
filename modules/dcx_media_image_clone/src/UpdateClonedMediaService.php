@@ -4,9 +4,11 @@ namespace Drupal\dcx_media_image_clone;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 
+/**
+ *
+ */
 class UpdateClonedMediaService {
 
   /**
@@ -26,8 +28,8 @@ class UpdateClonedMediaService {
   /**
    * Constructor.
    *
-   * @param EntityTypeManagerInterface $entityTypeManager
-   * @param MigrationPluginManagerInterface $migratePluginManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migratePluginManager
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager, MigrationPluginManagerInterface $migratePluginManager) {
     $this->entityTypeManager = $entityTypeManager;
@@ -38,7 +40,7 @@ class UpdateClonedMediaService {
    * Propagate the overwrite_properties defined in the DC-X Migration to all
    * clones of the given media.
    *
-   * @param EntityInterface $media
+   * @param \Drupal\Core\Entity\EntityInterface $media
    */
   public function updateClones(EntityInterface $media) {
     // Only operate on media:image entities which are not clones themselves.
@@ -62,9 +64,9 @@ class UpdateClonedMediaService {
   }
 
   /**
-   * Delete clones of the given media:image entity
+   * Delete clones of the given media:image entity.
    *
-   * @param EntityInterface $media
+   * @param \Drupal\Core\Entity\EntityInterface $media
    */
   public function deleteClones(EntityInterface $media) {
     // Only operate on media:image entities which are not clones themselves.
@@ -91,4 +93,5 @@ class UpdateClonedMediaService {
     return $this->entityTypeManager->getStorage($media->getEntityTypeId())
       ->loadByProperties(['field_parent_media' => $media->id()]);
   }
+
 }

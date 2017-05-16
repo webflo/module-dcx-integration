@@ -11,12 +11,13 @@ class Article extends BaseAsset {
   static $mandatory_attributes = [
     'id',
     'title',
-    'body'
+    'body',
   ];
 
   static $optional_attributes = [
-    'files'
+    'files',
   ];
+
   /**
    * Constuctor.
    *

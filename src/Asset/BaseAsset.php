@@ -4,6 +4,7 @@ namespace Drupal\dcx_integration\Asset;
 
 use Drupal\dcx_integration\Exception\MandatoryAttributeException;
 use Drupal\dcx_integration\Exception\IllegalAttributeException;
+
 /**
  * Base class for abstraction object for DC-X documents.
  */
@@ -29,7 +30,7 @@ abstract class BaseAsset {
    */
   public function __construct($data, $mandatory_attributes, $optional_attributes = []) {
     foreach ($mandatory_attributes as $attribute) {
-      if (!isset($data[$attribute]) || empty($data[$attribute]) ) {
+      if (!isset($data[$attribute]) || empty($data[$attribute])) {
         $e = new MandatoryAttributeException($attribute);
         throw $e;
       }
@@ -45,6 +46,9 @@ abstract class BaseAsset {
     $this->data = $data;
   }
 
+  /**
+   *
+   */
   public function data() {
     return $this->data;
   }

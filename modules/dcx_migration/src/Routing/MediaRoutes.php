@@ -17,7 +17,7 @@ class MediaRoutes {
     /** @var \Drupal\media_entity\Entity\MediaBundle[] $bundles */
     $bundles = \Drupal::entityTypeManager()->getStorage('media_bundle')->loadMultiple();
 
-    $routes = array();
+    $routes = [];
 
     foreach ($bundles as $bundle) {
 
@@ -26,17 +26,17 @@ class MediaRoutes {
         // Path to attach this route to:
           'media/add/' . $bundle->id(),
           // Route defaults:
-          array(
+          [
             '_form' => '\Drupal\dcx_migration\Form\DcxImportForm',
             '_title' => 'Import Image from DC-X',
-          ),
+          ],
           // Route requirements:
-          array(
+          [
             '_entity_create_access' => 'media:' . $bundle->id(),
-          ),
-          array(
+          ],
+          [
             '_admin_route' => TRUE,
-          )
+          ]
         );
       }
 

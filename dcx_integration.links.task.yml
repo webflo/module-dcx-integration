@@ -5,4 +5,3 @@ dcx_integration.json_client_settings: #name it same as route to avoid confusion
   #route defined in .routing.yml
   base_route: dcx_integration.json_client_settings #set the base tab
   weight: 0
-

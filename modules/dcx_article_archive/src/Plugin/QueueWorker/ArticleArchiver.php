@@ -58,6 +58,9 @@ class ArticleArchiver extends QueueWorkerBase implements ContainerFactoryPluginI
    */
   protected $renderer;
 
+  /**
+   *
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, ReferencedEntityDiscoveryServiceInterface $discovery, ClientInterface $client, LoggerChannelFactoryInterface $logger_factory, RendererInterface $renderer) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->discovery = $discovery;
@@ -93,10 +96,13 @@ class ArticleArchiver extends QueueWorkerBase implements ContainerFactoryPluginI
     if (!$node) {
       return;
     }
-    
+
     $this->archive($node);
   }
 
+  /**
+   *
+   */
   protected function archive(EntityInterface $node) {
     $data = [];
     $data['title'] = $node->title->value;

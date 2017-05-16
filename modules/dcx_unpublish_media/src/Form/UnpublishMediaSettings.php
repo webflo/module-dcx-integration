@@ -39,20 +39,20 @@ class UnpublishMediaSettings extends ConfigFormBase {
     $bundles = \Drupal::entityTypeManager()
       ->getStorage('media_bundle')
       ->loadMultiple();
-    $imageBundles = array();
+    $imageBundles = [];
     foreach ($bundles as $bundle) {
       if ($bundle->get('type') == 'image') {
         $imageBundles[] = $bundle->id();
       }
     }
 
-    $form['default_image'] = array(
+    $form['default_image'] = [
       '#type' => 'entity_autocomplete',
       '#title' => t('Default image'),
       '#default_value' => ($config->get('default_image')) ? entity_load('media', $config->get('default_image')) : NULL,
       '#target_type' => 'media',
       '#selection_settings' => ['target_bundles' => $imageBundles],
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }

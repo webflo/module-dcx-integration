@@ -2,5 +2,3 @@ services:
   dcx_migration.import:
     class: Drupal\dcx_migration\DcxImportService
     arguments: ["@string_translation", "@plugin.manager.migration", "@event_dispatcher"]
-
-

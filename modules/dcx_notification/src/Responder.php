@@ -21,21 +21,21 @@ class Responder extends ControllerBase {
   /**
    * The DC-X Client.
    *
-   * @var \Drupal\dcx_migration\DcxImportServiceInterface $importService
+   * @var \Drupal\dcx_migration\DcxImportServiceInterface
    */
   protected $importService;
 
   /**
    * Database connection.
    *
-   * @var \Drupal\Core\Database\Connection $connection
+   * @var \Drupal\Core\Database\Connection
    */
   protected $dbConnection;
 
   /**
    * Current request.
    *
-   * @var \Symfony\Component\HttpFoundation\Request $request
+   * @var \Symfony\Component\HttpFoundation\Request
    */
   protected $request;
 
@@ -82,7 +82,7 @@ class Responder extends ControllerBase {
    * As this represents the one URL on which DC-X talks to us, it relies on
    * _GET params rather than fancy URLs.
    *
-   * @return Response
+   * @return \Symfony\Component\HttpFoundation\Response
    *   An appropriate Response depending on parameters.
    *
    * @throws NotAcceptableHttpException
@@ -129,7 +129,7 @@ class Responder extends ControllerBase {
    * As this represents the one URL on which DC-X talks to us, it relies on
    * _GET params rather than fancy URLs.
    *
-   * @return Response
+   * @return \Symfony\Component\HttpFoundation\Response
    *   An appropriate Response depending on parameters.
    *
    * @throws NotAcceptableHttpException
@@ -178,7 +178,7 @@ class Responder extends ControllerBase {
    * @param string $id
    *   a DC-X ID to reimport.
    *
-   * @return Response
+   * @return \Symfony\Component\HttpFoundation\Response
    *   OK 200 if success.
    *
    * @throws NotFoundHttpException
@@ -218,7 +218,7 @@ class Responder extends ControllerBase {
    *
    * @see dcx_track_media_usage_node_update
    *
-   * @return Response an empty (204) response.
+   * @return \Symfony\Component\HttpFoundation\Response an empty (204) response.
    *
    * @throws ResourceNotFoundException If the resource could not be found
    * @throws MethodNotAllowedException If the resource was found but the request method is not allowed

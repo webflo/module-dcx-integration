@@ -13,13 +13,16 @@ use Drupal\dcx_integration\Asset\Article;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * Description of AssetTest
+ * Description of AssetTest.
  *
  * @group dcx
  */
 class AssetTest extends UnitTestCase {
 
-  function testCreateImage__mandatory_attr() {
+  /**
+   *
+   */
+  public function testCreateImage__mandatory_attr() {
     $data = [];
     foreach (Image::$mandatory_attributes as $attr) {
       $data[$attr] = 'test__' . $attr;
@@ -29,7 +32,10 @@ class AssetTest extends UnitTestCase {
     $this->assertArrayEquals($data, $asset->data(), "Mandatory attributes suffice to create an Image");
   }
 
-  function testCreateImage__optional_attr() {
+  /**
+   *
+   */
+  public function testCreateImage__optional_attr() {
     $data = [];
     foreach (array_merge(Image::$mandatory_attributes, Image::$optional_attributes) as $attr) {
       $data[$attr] = 'test__' . $attr;
@@ -39,7 +45,10 @@ class AssetTest extends UnitTestCase {
     $this->assertArrayEquals($data, $asset->data(), "Mandatory and optional attributes are able to create an Image");
   }
 
-  function testCreateImage__missing_mandatory() {
+  /**
+   *
+   */
+  public function testCreateImage__missing_mandatory() {
     $data = [];
     foreach (Image::$mandatory_attributes as $attr) {
       $data[$attr] = 'test__' . $attr;
@@ -50,12 +59,15 @@ class AssetTest extends UnitTestCase {
     $asset = new Image($data);
   }
 
-  function testCreateImage__stray_option() {
+  /**
+   *
+   */
+  public function testCreateImage__stray_option() {
     $invalid_attribute = 'invalid';
     $this->assertTrue(!in_array($invalid_attribute, Image::$mandatory_attributes + Image::$optional_attributes), 'Invalid attribute in the list of mandatory or optional attributes.');
 
     $data = [];
-    foreach (array_merge(Image::$mandatory_attributes, [$invalid_attribute])  as $attr) {
+    foreach (array_merge(Image::$mandatory_attributes, [$invalid_attribute]) as $attr) {
       $data[$attr] = 'test__' . $attr;
     }
 
@@ -63,7 +75,10 @@ class AssetTest extends UnitTestCase {
     $asset = new Image($data);
   }
 
-  function testCreateArticle__mandatory_attr() {
+  /**
+   *
+   */
+  public function testCreateArticle__mandatory_attr() {
     $data = [];
     foreach (Article::$mandatory_attributes as $attr) {
       $data[$attr] = 'test__' . $attr;
@@ -73,7 +88,10 @@ class AssetTest extends UnitTestCase {
     $this->assertArrayEquals($data, $asset->data(), "Mandatory attributes suffice to create an Article");
   }
 
-  function testCreateArticle__optional_attr() {
+  /**
+   *
+   */
+  public function testCreateArticle__optional_attr() {
     $data = [];
     foreach (array_merge(Article::$mandatory_attributes, Article::$optional_attributes) as $attr) {
       $data[$attr] = 'test__' . $attr;
@@ -83,7 +101,10 @@ class AssetTest extends UnitTestCase {
     $this->assertArrayEquals($data, $asset->data(), "Mandatory and optional attributes are able to create an Article");
   }
 
-  function testCreateArticle__missing_mandatory() {
+  /**
+   *
+   */
+  public function testCreateArticle__missing_mandatory() {
     $data = [];
     foreach (Article::$mandatory_attributes as $attr) {
       $data[$attr] = 'test__' . $attr;
@@ -94,16 +115,20 @@ class AssetTest extends UnitTestCase {
     $asset = new Article($data);
   }
 
-  function testCreateArticle__stray_option() {
+  /**
+   *
+   */
+  public function testCreateArticle__stray_option() {
     $invalid_attribute = 'invalid';
     $this->assertTrue(!in_array($invalid_attribute, Article::$mandatory_attributes + Article::$optional_attributes), 'Invalid attribute in the list of mandatory or optional attributes.');
 
     $data = [];
-    foreach (array_merge(Article::$mandatory_attributes, [$invalid_attribute])  as $attr) {
+    foreach (array_merge(Article::$mandatory_attributes, [$invalid_attribute]) as $attr) {
       $data[$attr] = 'test__' . $attr;
     }
 
     $this->setExpectedException('Drupal\dcx_integration\Exception\IllegalAttributeException');
     $asset = new Article($data);
   }
+
 }

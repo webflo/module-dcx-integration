@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\dcx_track_media_usage;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
@@ -17,7 +16,7 @@ interface ReferencedEntityDiscoveryPluginInterface extends PluginInspectionInter
   /**
    * Find referenced entities on the given entity.
    *
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *
    * @return array
    *   List of referenced entities keyed by entity id

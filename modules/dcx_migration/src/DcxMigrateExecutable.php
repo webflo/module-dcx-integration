@@ -48,7 +48,7 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
   /**
    * React to migration completion.
    *
-   * @param MigrateImportEvent $event
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The map event.
    */
   public function onPreImport(MigrateImportEvent $event) {
@@ -58,7 +58,7 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
   /**
    * React to migration completion.
    *
-   * @param MigrateImportEvent $event
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The map event.
    */
   public function onPostImport(MigrateImportEvent $event) {
@@ -76,14 +76,16 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
     }
   }
 
-
+  /**
+   *
+   */
   public function importItemWithUnknownStatus($id) {
     $id_map = $this->migration->getIdMap();
 
     // This is a noop if $id is not in $id_map. So it's save to run it anyway.
     $this->prepareUpdate($id, $id_map);
 
-	$this->getEventDispatcher()->dispatch(MigrateEvents::PRE_IMPORT, new MigrateImportEvent($this->migration, $this->message));
+    $this->getEventDispatcher()->dispatch(MigrateEvents::PRE_IMPORT, new MigrateImportEvent($this->migration, $this->message));
 
     $source = $this->getSource();
     $row = $source->getRowById($id);
@@ -98,29 +100,29 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
       $save = TRUE;
     }
     catch (MigrateException $e) {
-      $this->migration->getIdMap()->saveIdMapping($row, array(), $e->getStatus());
+      $this->migration->getIdMap()->saveIdMapping($row, [], $e->getStatus());
       $this->saveMessage($e->getMessage(), $e->getLevel());
       $save = FALSE;
     }
     catch (MigrateSkipRowException $e) {
-      $id_map->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_IGNORED);
+      $id_map->saveIdMapping($row, [], MigrateIdMapInterface::STATUS_IGNORED);
       $save = FALSE;
     }
 
     if ($save) {
       try {
-		$this->getEventDispatcher()->dispatch(MigrateEvents::PRE_ROW_SAVE, new MigratePreRowSaveEvent($this->migration, $this->message, $row));
-		$destination = $this->migration->getDestinationPlugin();
+        $this->getEventDispatcher()->dispatch(MigrateEvents::PRE_ROW_SAVE, new MigratePreRowSaveEvent($this->migration, $this->message, $row));
+        $destination = $this->migration->getDestinationPlugin();
         $destination_id_values = $destination->import($row, $id_map->lookupDestinationId($this->sourceIdValues));
-		$this->getEventDispatcher()->dispatch(MigrateEvents::POST_ROW_SAVE, new MigratePostRowSaveEvent($this->migration, $this->message, $row, $destination_id_values));
-		if ($destination_id_values) {
+        $this->getEventDispatcher()->dispatch(MigrateEvents::POST_ROW_SAVE, new MigratePostRowSaveEvent($this->migration, $this->message, $row, $destination_id_values));
+        if ($destination_id_values) {
           // We do not save an idMap entry for config.
           if ($destination_id_values !== TRUE) {
             $id_map->saveIdMapping($row, $destination_id_values, $this->sourceRowStatus, $destination->rollbackAction());
           }
         }
         else {
-          $id_map->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_FAILED);
+          $id_map->saveIdMapping($row, [], MigrateIdMapInterface::STATUS_FAILED);
           if (!$id_map->messageCount()) {
             $message = $this->t('New object was not saved, no error provided');
             $this->saveMessage($message);
@@ -129,11 +131,11 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
         }
       }
       catch (MigrateException $e) {
-        $this->migration->getIdMap()->saveIdMapping($row, array(), $e->getStatus());
+        $this->migration->getIdMap()->saveIdMapping($row, [], $e->getStatus());
         $this->saveMessage($e->getMessage(), $e->getLevel());
       }
       catch (\Exception $e) {
-        $this->migration->getIdMap()->saveIdMapping($row, array(), MigrateIdMapInterface::STATUS_FAILED);
+        $this->migration->getIdMap()->saveIdMapping($row, [], MigrateIdMapInterface::STATUS_FAILED);
         $this->handleException($e);
       }
     }
@@ -145,7 +147,7 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
     unset($sourceValues, $destinationValues);
     $this->sourceRowStatus = MigrateIdMapInterface::STATUS_IMPORTED;
 
-	$this->getEventDispatcher()->dispatch(MigrateEvents::POST_IMPORT, new MigrateImportEvent($this->migration, $this->message));
+    $this->getEventDispatcher()->dispatch(MigrateEvents::POST_IMPORT, new MigrateImportEvent($this->migration, $this->message));
 
   }
 
@@ -156,12 +158,13 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
    * @TODO This depends on a single valued source id and might break badly for
    * multi-valued ones.
    *
-   * @param string $id source_id
+   * @param string $id
+   *   source_id.
    * @param \Drupal\migrate\Plugin\migrate\id_map\Sql $map
    */
   public function prepareUpdate($id, $map) {
     $map->getDatabase()->update($map->mapTableName())
-      ->fields(array('source_row_status' => MigrateIdMapInterface::STATUS_NEEDS_UPDATE))
+      ->fields(['source_row_status' => MigrateIdMapInterface::STATUS_NEEDS_UPDATE])
       ->condition('sourceid1', $id)
       ->execute();
   }
@@ -169,7 +172,7 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
   /**
    * Gets the migration plugin.
    *
-   * @return \Drupal\migrate\Plugin\MigrationInterface.
+   * @return \Drupal\migrate\Plugin\MigrationInterface
    */
   public function getMigration() {
     return $this->migration;
@@ -181,11 +184,14 @@ class DcxMigrateExecutable extends MigrateExecutable implements MigrateMessageIn
    * Looks up the given source id and return either the respective (possibly
    * multivalued) destination id or NULL.
    *
-   * @param string $id source_id
+   * @param string $id
+   *   source_id.
+   *
    * @return array | NULL
    */
   public function isReimport($id) {
     $destids = $this->migration->getIdMap()->lookupDestinationIds(['id' => $id]);
     return current($destids);
   }
+
 }

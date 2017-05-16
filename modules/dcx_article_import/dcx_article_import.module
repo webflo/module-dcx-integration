@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Core\Url;
 
 /**
@@ -15,14 +19,14 @@ function dcx_article_import_menu_local_tasks_alter(&$data, $route_name) {
   if ('node.add' == $route_name) {
     // For page.add we need to turn off caching to allow the tabs to be computed
     // everytime we visit the route, as the tabs should only show up for our
-    // parameter
+    // parameter.
     $data['cacheability']->setCacheMaxAge(0);
 
     // This is ugly like hell, but apparently the way to do this atm:
     // https://www.drupal.org/node/2274705
     $current_path = \Drupal::service('path.current')->getPath();
     $path_args = explode('/', $current_path);
-    // $current_path began with a slash, so this starts to count at 1
+    // $current_path began with a slash, so this starts to count at 1.
     if ('article' == $path_args[3]) {
       $node_add_article = TRUE;
     }
@@ -35,7 +39,7 @@ function dcx_article_import_menu_local_tasks_alter(&$data, $route_name) {
         '#active' => ('node.add' == $route_name),
         '#link' => [
           'title' => \Drupal::translation()->translate('Add'),
-          'url' => Url::fromRoute('node.add', ['node_type' => 'article'])
+          'url' => Url::fromRoute('node.add', ['node_type' => 'article']),
         ],
       ],
       'dcx_article_import.form' => [
@@ -45,7 +49,7 @@ function dcx_article_import_menu_local_tasks_alter(&$data, $route_name) {
           'title' => \Drupal::translation()->translate('DC-X Import'),
           'url' => Url::fromRoute('dcx_article_import.form'),
         ],
-      ]
+      ],
     ];
   }
 }

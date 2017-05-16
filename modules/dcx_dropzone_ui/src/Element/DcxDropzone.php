@@ -32,6 +32,9 @@ class DcxDropzone extends FormElement {
     ];
   }
 
+  /**
+   *
+   */
   public static function processElement($element, FormStateInterface $form_state, $complete_form) {
     $element['#element_validate'][] = [get_called_class(), 'validateInput'];
     $element['dropvalue'] = [
@@ -42,6 +45,9 @@ class DcxDropzone extends FormElement {
     return $element;
   }
 
+  /**
+   *
+   */
   public static function preRenderElement($element) {
     $element['#attached']['drupalSettings']['dcx_dropzone'] = [
       'dropzone_id' => $element['#id'],
@@ -50,10 +56,14 @@ class DcxDropzone extends FormElement {
     return $element;
   }
 
+  /**
+   *
+   */
   public static function validateInput(&$element, FormStateInterface $form_state, &$complete_form) {
     $user_input = NestedArray::getValue($form_state->getUserInput(), $element['#parents'] + ['dropvalue']);
 
     $value = $user_input['dropvalue'];
     $form_state->setValueForElement($element, $value);
   }
+
 }

@@ -31,12 +31,12 @@ class DcxDropzoneWidget extends View {
   public function getForm(array &$original_form, FormStateInterface $form_state, array $aditional_widget_parameters) {
     $config = $this->getConfiguration();
 
-    $form['dcx_dropzone_widget'] = array(
+    $form['dcx_dropzone_widget'] = [
       '#type' => 'container',
-      '#attributes' => array(
+      '#attributes' => [
         'class' => 'dcx-dropzone-widget',
-      ),
-    );
+      ],
+    ];
 
     $form['dcx_dropzone_widget']['dropzone'] = [
       '#title' => '',

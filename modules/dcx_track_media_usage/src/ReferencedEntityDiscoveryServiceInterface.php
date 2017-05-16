@@ -15,7 +15,7 @@ interface ReferencedEntityDiscoveryServiceInterface {
    * Collect media:image entities referenced by this $entity in any way we can
    * detect by the implemented plugins.
    *
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    * @param bool $return_entities
    *   Returns List of entities keyed by DC-X IDs instead of the IDs.
    *
