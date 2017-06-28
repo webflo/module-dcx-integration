@@ -337,7 +337,7 @@ class JsonClient implements ClientInterface {
    * Computes the (published) status of the image, evaluating the key
    * '_rights_effective'.
    *
-   * Searches for a right with the topic_id 'dcxapi:tm_topic/rightsusage-Online'.
+   * Searches for a right with the topic_id 'dcxapi:tm_topic/rightsusage-UsagePermittedDigital'.
    *
    * @param array $json
    *

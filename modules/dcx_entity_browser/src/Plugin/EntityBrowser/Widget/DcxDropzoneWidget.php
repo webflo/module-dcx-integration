@@ -11,7 +11,9 @@ use Drupal\entity_browser\Plugin\EntityBrowser\Widget\View;
  * @EntityBrowserWidget(
  *   id = "dcx_dropzone",
  *   label = @Translation("DCX Dropzone"),
- *   description = @Translation("Adds DCX Dropzone import integration.")
+ *   provider = "views",
+ *   description = @Translation("Adds DCX Dropzone import integration."),
+ *   auto_select = TRUE
  * )
  */
 class DcxDropzoneWidget extends View {
