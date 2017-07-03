@@ -1,0 +1,15 @@
+details.dcx-collection .details-wrapper {
+	display: inline-block;
+}
+
+.dcx-collection .img {
+	position: relative;
+	float: left;
+	width: 150px;
+	height: 150px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	margin: 5px;
+}
+

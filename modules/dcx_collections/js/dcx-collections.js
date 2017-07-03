@@ -46,8 +46,10 @@
       url: baseUrl + '/dcx/collection/preview-image/' + id,
       wrapper: wrapper,
       success: function (data) {
-        this.wrapper.html($('<img>').attr('src', data.url));
-        this.wrapper.append($('<div>').html(data.filename));
+        this.wrapper.html($('<div>')
+			.attr('draggable', 'true')
+			.attr('class', 'img')
+			.attr('style', "background-image:url('" + data.url + "');"));
         this.wrapper.on('dragstart', function (ev) {
           ev.originalEvent.dataTransfer.setData('text/plain', data.id);
         });

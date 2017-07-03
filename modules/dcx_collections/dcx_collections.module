@@ -57,7 +57,7 @@ function _dcx_collections_build_detail(array $collection, array &$detail, array 
   }
 
   // Inject placeholder for image previed loaded by AJAX.
-  $this_detail['images']['#markup'] = '<span id="dcx-preview-' . $collection['id'] . '"></span>';
+  $this_detail['images']['#markup'] = '<span class="dcx-collection" id="dcx-preview-' . $collection['id'] . '"></span>';
 
   $detail[$collection['id']] = $this_detail;
 }
