@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\Tests\dcx_integration;
+namespace Drupal\Tests\dcx_integration\Unit;
 
 /**
  * Dummy API client class.
  *
  * It allows introspection of called methods and arguments for testing.
  */
-class DummyDcxApiClient /* implement DcxApiClientInterface */ {
+class DummyDcxApiClient {
 
   /**
    *
@@ -24,7 +24,7 @@ class DummyDcxApiClient /* implement DcxApiClientInterface */ {
   /**
    *
    */
-  public function getObject($url, array $params, &$data) {
+  public function get($url, array $params, &$data) {
     // __METHOD__ would return namespaced value.
     $this->method = __FUNCTION__;
     return $this->_doit($url, $params, $data, $data);
@@ -36,6 +36,7 @@ class DummyDcxApiClient /* implement DcxApiClientInterface */ {
   public function createObject($url, array $params, array $data, &$response_body) {
     // __METHOD__ would return namespaced value.
     $this->method = __FUNCTION__;
+    $data = NULL;
     return $this->_doit($url, $params, $data, $response_body);
   }
 
@@ -45,6 +46,7 @@ class DummyDcxApiClient /* implement DcxApiClientInterface */ {
   public function setObject($url, array $params, array $data, &$response_body) {
     // __METHOD__ would return namespaced value.
     $this->method = __FUNCTION__;
+    $data = NULL;
     return $this->_doit($url, $params, $data, $response_body);
   }
 
@@ -54,6 +56,7 @@ class DummyDcxApiClient /* implement DcxApiClientInterface */ {
   public function deleteObject($url, array $params, &$response_body) {
     // __METHOD__ would return namespaced value.
     $this->method = __FUNCTION__;
+    $data = NULL;
     return $this->_doit($url, $params, $data, $response_body);
   }
 
