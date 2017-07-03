@@ -12,11 +12,12 @@ The DC-X module family consist of the following modules:
 * dcx_integration
 * dcx_migration
 * dcx_article_archive
+* dcx_article_import
 * dcx_dropzone_ui
 * dcx_entity_browser
 * dcx_notification
-* dcx_integration_debug
-* dcx_debug_json_client
+* dcx_collection
+* dcx_media_image_clone
 
 ## dcx_integration
 * Provides all communication to DC-X "over the wire" using a customized version of the DC-X API client. No other module talks to DC-X directly. See service "dcx_integration.client".
@@ -40,14 +41,15 @@ The DC-X module family consist of the following modules:
 ## dcx_notification
 * Provides a callback URL to allow DC-X to trigger update of entities to reflect changes to the data. Main use is to notify drupal media items if respective image document has changed. See route "dcx_notification.trigger"
 
-# dcx_track_media_usage
+## dcx_track_media_usage
 * Provides usage tracking for images, i.e. it notifies the DC-X image document corresponding to an image use in Drupal of the fact that it's used. See entity insert/update hooks in the module file.
 * Provides a plugin base service to discover media:image entities referenced on article node.
 
-## dcx_integration_debug
-* Provides a local, non-http, stupid and mainly useless mock DC-X service which will return an image asset for any DC-X id given. See class "DcxIntegrationDebugServiceProvider".
-* Dev module, not intended for use in production.
+## dcx_article_import
+* Provides a second dropzone to import articles from DC-X. These articles can be splitted into paragraphs during the import.
 
-## dcx_debug_json_client
-* Provides a local, non-http, stupid and mainly useless mock DC-X API Client to allow inspection of URL parameters and data structures created while talking to the DC-X server. See class "DcxDebugJsonClientServiceProvider".
-* Dev module, not intended for use in production.
+## dcx_collection
+* Attach a collection view to the dropzone element, to show the users custom collections and make it easier to import images from therse collections.
+
+## dcx_media_image_clone
+* Allow cloning media image entities and keep track of the clones regarding DC-X
