@@ -133,18 +133,22 @@ class DcxImportService implements DcxImportServiceInterface {
    */
   public static function batchFinished($success, array $results, array $operations) {
     $t = \Drupal::translation();
+    $status = 'warning';
+    if ($results['success'] == $results['count']) {
+      $status = 'status';
+    }
     $success = $t->translate('Imported @success of @count items.', ['@success' => $results['success'], '@count' => $results['count']]);
-    drupal_set_message($success);
+    drupal_set_message($success, $status);
 
     foreach ($results['reimport'] as $dcxid => $mid) {
       $url = Url::fromRoute('entity.media.canonical', ['media' => $mid], ['attributes' => ['target' => '_blank']]);
       $link = Link::fromTextAndUrl('media/' . $mid, $url)->toString();
-      drupal_set_message($t->translate('Item @dcxid was imported before as @link.', ['@dcxid' => $dcxid, '@link' => $link]));
+      drupal_set_message($t->translate('Item @dcxid was imported before as @link.', ['@dcxid' => $dcxid, '@link' => $link]), 'warning');
     }
 
     if (!empty($results['fail'])) {
       $fail = $t->translate('The following item(s) failed to import: @items', ['@items' => implode(', ', $results['fail'])]);
-      drupal_set_message($fail);
+      drupal_set_message($fail, 'error');
     }
   }
 
